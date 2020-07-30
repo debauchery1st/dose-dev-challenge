@@ -10,12 +10,16 @@ Vue.config.productionTip = false;
 Vue.use(Buefy);
 
 let app;
-auth.onAuthStateChanged(() => {
+auth.onAuthStateChanged((user) => {
   if (!app) {
     app = new Vue({
       router,
       store,
-      render: (h) => h(App),
+      render: (h) => h(App)
     }).$mount("#app");
+  }
+  if (user) {
+    // prevent losing the user profile on page refresh
+    store.dispatch("fetchUserProfile", user);
   }
 });

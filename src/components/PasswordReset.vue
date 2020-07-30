@@ -12,7 +12,8 @@
             placeholder="you@email.com"
           />
         </form>
-        <button @click="resetPassword()" class="button">Reset</button>
+        <b-p v-if="errorMsg !== ''" class="error">{{ errorMsg }}</b-p>
+        <b-button @click="resetPassword()" class="button">Reset</b-button>
       </div>
       <p v-else>Success! Check your email for a reset link.</p>
     </div>
@@ -26,11 +27,19 @@ export default {
     return {
       email: "",
       showSuccess: false,
+      errorMsg: "",
     };
   },
   methods: {
     async resetPassword() {
-      // reset logic
+      this.errorMsg = "";
+
+      try {
+        await auth.sendPasswordResetEmail(this.email);
+        this.showSuccess = true;
+      } catch (err) {
+        this.errorMsg = err.message;
+      }
     },
   },
 };

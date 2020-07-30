@@ -15,6 +15,11 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async logout({ commit }) {
+      await fb.auth.signOut();
+      commit("setUserProfile", {}); // clear profile
+      router.push("/login"); // redirect
+    },
     async login({ dispatch }, form) {
       const { user } = await fb.auth.signInWithEmailAndPassword(
         form.email,
