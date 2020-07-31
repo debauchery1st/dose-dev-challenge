@@ -11,10 +11,11 @@ const firebaseConfig = {
   storageBucket: "dose-dev-challenge.appspot.com",
   messagingSenderId: "906536118969",
   appId: "1:906536118969:web:0c657dba508c90e0da4968",
-  measurementId: "G-TPHFTXDT32",
+  measurementId: "G-TPHFTXDT32"
 };
-firebase.initializeApp(firebaseConfig);
-
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+firebaseApp.firestore().settings({ timestampsInSnapshots: true });
+firebaseApp.serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 // utils
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -22,8 +23,7 @@ const auth = firebase.auth();
 // collection references
 const usersCollection = db.collection("users");
 const postsCollection = db.collection("posts");
-const commentsCollection = db.collection("comments");
-const likesCollection = db.collection("likes");
+const ratingsCollection = db.collection("ratings");
 
 // export utils/refs
 export {
@@ -31,6 +31,6 @@ export {
   auth,
   usersCollection,
   postsCollection,
-  commentsCollection,
-  likesCollection,
+  ratingsCollection,
+  firebaseApp
 };

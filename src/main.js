@@ -3,12 +3,14 @@ import App from "./App.vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faUserSecret, faStar, fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faAmazon } from "@fortawesome/free-brands-svg-icons";
 
 import router from "./router";
 import store from "./store";
 import { auth } from "./firebase";
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
+library.add(faAmazon);
 library.add(faUserSecret);
 library.add(faStar);
 library.add(fas);

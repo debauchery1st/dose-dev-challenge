@@ -1,44 +1,57 @@
 <template>
-  <div id="dashboard">
+  <div id="dashboard" class="dashboard">
     <section>
-      <!-- <transition name="fade">
-        <CommentModal
-          v-if="showCommentModal"
-          :post="selectedPost"
-          @close="toggleCommentModal()"
-        ></CommentModal>
-        <li>
-          <a @click="toggleCommentModal(post)">comments {{ post.comments }}</a>
-        </li>
-      </transition> -->
       <div class="col1">
         <div class="profile">
-          <h5>Rate this product</h5>
-          <p>product description</p>
+          <br />
+          <h5>select a product</h5>
           <div class="create-review">
-            <p>submit a review of this product</p>
             <form @submit.prevent>
-              <textarea
-                class="widget-text"
-                v-model.trim="review.content"
-                placeholder="...type your review in here"
-              ></textarea>
+              <div class="product-options">
+                <b-select
+                  v-model="review.variation"
+                  placeholder="Select a Product"
+                  icon="account"
+                >
+                  <optgroup label="Alexa">
+                    <option value="charcoal-fab">Charcoal Fabric</option>
+                    <option value="sandstone-fab">Sandstone Fabric</option>
+                    <option value="black">Black</option>
+                    <option value="white">White</option>
+                    <option value="walnut-fin">Walnut Finish</option>
+                    <option value="walnut-fin">Heather Gray Fabric</option>
+                    <option value="walnut-fin">Oak Finish</option>
+                  </optgroup>
+                </b-select>
+              </div>
+              <div class="widget-text-container">
+                <b-field>
+                  <b-input
+                    class="widget-text"
+                    v-model.trim="review.content"
+                    type="textarea"
+                    minlength="10"
+                    maxlength="500"
+                    placeholder="...type your review in here"
+                  >
+                  </b-input>
+                </b-field>
+              </div>
               <br />
               <div class="rate-box">
                 <b-rate
+                  v-model="review.rating"
                   icon-pack="fas"
-                  @change="success"
-                  custom-text="How would you rate this?"
+                  @change="success()"
+                  custom-text="How do you rate this product?"
                 ></b-rate>
               </div>
               <b-button
-                type="is-dark"
                 @click="createReview()"
                 :disabled="review.content === ''"
                 class="button"
+                >submit</b-button
               >
-                submit
-              </b-button>
             </form>
           </div>
         </div>
@@ -48,15 +61,8 @@
           <h5>{{ post.userName }}</h5>
           <span>{{ post.createdOn | formatDate }}</span>
           <p>{{ post.content | trimeLength }}</p>
-          <ul>
-            <li>
-              <a>comments {{ post.comments }}</a>
-            </li>
-            <li>
-              <a>likes {{ post.likes }}</a>
-            </li>
-            <li><a>view full post</a></li>
-          </ul>
+          <p>{{ post.rating }} stars</p>
+          <p>variation: {{ post.variation }}</p>
         </div>
       </div>
       <div v-else>
@@ -69,17 +75,15 @@
 <script>
 import { mapState } from "vuex";
 import moment from "moment";
-import CommentModal from "@/components/CommentModal";
 export default {
-  components: {
-    CommentModal
-  },
+  components: {},
   data() {
     return {
       review: {
-        content: ""
+        content: "",
+        rating: 0,
+        variation: ""
       },
-      showCommentModal: false,
       selectedPost: {}
     };
   },
@@ -87,22 +91,21 @@ export default {
     ...mapState(["userProfile", "posts"])
   },
   methods: {
-    likePost(id, likesCount) {
-      this.$store.dispatch("likePost", { id, likesCount });
+    success() {
+      this.review.rating = this.$buefy.toast.open({
+        message: "Thank you!",
+        type: "is-success"
+      });
     },
     createReview() {
-      this.$store.dispatch("createReview", { content: this.review.content });
+      this.$store.dispatch("createReview", {
+        content: this.review.content,
+        rating: this.review.rating,
+        variation: this.review.variation
+      });
       this.review.content = "";
-    },
-    toggleCommentModal(post) {
-      this.showCommentModal = !this.showCommentModal;
-
-      // if opening modal set selectedPost, else clear
-      if (this.showCommentModal) {
-        this.selectedPost = post;
-      } else {
-        this.selectedPost = {};
-      }
+      this.review.rating = 0;
+      this.review.variation = "";
     }
   },
   filters: {
@@ -125,16 +128,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
-textarea {
-  width: 300px;
-  height: 200px;
-  background-color: #1f2230;
+.widget-text-container {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+.widget-text {
+  min-width: 42ch;
+  // background-color: #1f2230;
   letter-spacing: 1px;
-  color: #79b8a7;
+  // color: #79b8a7;
   font-size: 1rem;
-  border: 1px solid;
+  // border: 1px solid;
   border-radius: 0.5rem;
-  margin: 1rem;
+  margin-top: 1rem;
+}
+
+.dashboard {
+  margin-top: 4rem;
 }
 .post {
   display: flex;
@@ -143,7 +154,7 @@ textarea {
   align-items: center;
   // text-align: left;
   width: 32ch;
-  min-height: 32ch;
+  // min-height: 32ch;
   margin: 1rem;
   border: 1px solid white;
   border-radius: 0.5rem;
@@ -164,5 +175,13 @@ textarea {
   justify-content: space-evenly;
   align-items: center;
   margin-bottom: 1rem;
+}
+.product-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: auto;
+  margin-top: 1rem;
 }
 </style>

@@ -25,8 +25,9 @@ const store = new Vuex.Store({
         content: review.content + (commit.content || ""),
         userId: fb.auth.currentUser.uid,
         userName: state.userProfile.name,
-        comments: 0,
-        likes: 0
+        rating: review.rating || 0,
+        variation: review.variation || "",
+        timestamp: fb.firebaseApp.serverTimestamp()
       });
     },
     async logout({ commit }) {
@@ -58,27 +59,6 @@ const store = new Vuex.Store({
       commit("setUserProfile", userProfile.data());
 
       router.push("/");
-    },
-    async likePost({ commit }, post) {
-      const userId = fb.auth.currentUser.uid;
-      const docId = `${userId}_${post.id}`;
-
-      //check if exists
-      const doc = await fb.likesCollection.doc(docId).get();
-      if (doc.exists) {
-        return;
-      }
-
-      // create
-      await fb.likesCollection.doc(docId).set({
-        postId: post.id,
-        userId: userId
-      });
-
-      // update count
-      fb.postsCollection.doc(post.id).update({
-        likes: post.likesCount + 1
-      });
     }
   },
   modules: {}
