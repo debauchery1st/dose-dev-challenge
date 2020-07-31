@@ -11,6 +11,7 @@ import { mapState } from "vuex";
 import SiteNav from "@/components/SiteNav";
 
 export default {
+  // name: "App",
   data() {
     return {
       appStyle: {

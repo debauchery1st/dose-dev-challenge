@@ -7,14 +7,24 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    userProfile: {},
+    userProfile: {}
   },
   mutations: {
     setUserProfile(state, val) {
       state.userProfile = val;
-    },
+    }
   },
   actions: {
+    async createReview({ state, commit }, review) {
+      await fb.postsCollection.add({
+        createdOn: new Date(),
+        content: review.content + (commit.content || ""),
+        userId: fb.auth.currentUser.uid,
+        userName: state.userProfile.name,
+        comments: 0,
+        likes: 0
+      });
+    },
     async logout({ commit }) {
       await fb.auth.signOut();
       commit("setUserProfile", {}); // clear profile
@@ -34,7 +44,7 @@ export default new Vuex.Store({
       );
       await fb.usersCollection.doc(user.uid).set({
         name: form.name,
-        title: form.title,
+        title: form.title
       });
       dispatch("fetchUserProfile", user);
     },
@@ -44,7 +54,7 @@ export default new Vuex.Store({
       commit("setUserProfile", userProfile.data());
 
       router.push("/");
-    },
+    }
   },
-  modules: {},
+  modules: {}
 });
