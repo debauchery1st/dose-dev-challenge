@@ -8,11 +8,7 @@
           <div class="create-review">
             <form @submit.prevent>
               <div class="product-options">
-                <b-select
-                  v-model="review.variation"
-                  placeholder="Select a Product"
-                  icon="account"
-                >
+                <b-select v-model="review.variation" placeholder="Select a Product" icon="account">
                   <optgroup label="Alexa">
                     <option value="charcoal-fab">Charcoal Fabric</option>
                     <option value="sandstone-fab">Sandstone Fabric</option>
@@ -33,8 +29,7 @@
                     minlength="10"
                     maxlength="500"
                     placeholder="...type your review in here"
-                  >
-                  </b-input>
+                  ></b-input>
                 </b-field>
               </div>
               <br />
@@ -50,8 +45,7 @@
                 @click="createReview()"
                 :disabled="review.content === ''"
                 class="button"
-                >submit</b-button
-              >
+              >submit</b-button>
             </form>
           </div>
         </div>
@@ -145,7 +139,7 @@ export default {
 }
 
 .dashboard {
-  margin-top: 4rem;
+  padding-top: 4rem;
 }
 .post {
   display: flex;

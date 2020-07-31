@@ -33,12 +33,12 @@ export default {
 </script>
 
 <style lang="less">
-body {
-  padding: 30px;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-}
+// body {
+//   // padding: 30px;
+//   height: 100vh;
+//   width: 100vw;
+//   margin: 0;
+// }
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
