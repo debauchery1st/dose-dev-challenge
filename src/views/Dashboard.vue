@@ -6,7 +6,11 @@
           <br />
           <h5>select a product</h5>
           <div class="create-review">
-            <form @submit.prevent>
+            <form @submit="checkForm">
+              <ul v-if="errors.length" class="val-error-container">
+                <b>Please correct the following...</b>
+                <li v-for="error in errors" :key="error.id" class="val-error">{{ error }}</li>
+              </ul>
               <div class="product-options">
                 <b-select v-model="review.variation" placeholder="Select a Product" icon="account">
                   <optgroup label="Alexa">
@@ -73,6 +77,7 @@ export default {
   components: {},
   data() {
     return {
+      errors: [],
       review: {
         content: "",
         rating: 0,
@@ -85,13 +90,32 @@ export default {
     ...mapState(["userProfile", "posts"])
   },
   methods: {
+    checkForm: function(e) {
+      this.errors = [];
+      if (this.review.content.length < 5) {
+        this.errors.push("Lengthen your review.");
+      }
+      if (this.review.variation.length < 1) {
+        this.errors.push("Select your variation from the drop-down list.");
+      }
+      if (this.review.rating === 0) {
+        this.errors.push("Rate the product between 1 and 5 stars");
+      }
+      if (this.errors.length === 0) {
+        return true;
+      }
+      e.preventDefault(e);
+    },
     success() {
       this.review.rating = this.$buefy.toast.open({
-        message: "Thank you!",
+        message: "Thank you for the rating!",
         type: "is-success"
       });
     },
     createReview() {
+      if (this.checkForm()) {
+        console.log("ok");
+      }
       this.$store.dispatch("createReview", {
         content: this.review.content,
         rating: this.review.rating,
@@ -177,5 +201,25 @@ export default {
   width: 100vw;
   height: auto;
   margin-top: 1rem;
+}
+.error-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 40ch;
+
+  height: auto;
+}
+.val-error-container {
+  padding: 0.5rem;
+  text-align: center;
+  line-height: 1em;
+  width: 100vw;
+}
+.val-error {
+  color: #e45360;
+  line-height: 1.2em;
+  letter-spacing: 1px;
 }
 </style>
