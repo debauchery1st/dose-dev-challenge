@@ -5,11 +5,15 @@ import router from "../router";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
-    userProfile: {}
+    userProfile: {},
+    posts: []
   },
   mutations: {
+    setPosts(state, val) {
+      state.posts = val;
+    },
     setUserProfile(state, val) {
       state.userProfile = val;
     }
@@ -54,7 +58,41 @@ export default new Vuex.Store({
       commit("setUserProfile", userProfile.data());
 
       router.push("/");
+    },
+    async likePost({ commit }, post) {
+      const userId = fb.auth.currentUser.uid;
+      const docId = `${userId}_${post.id}`;
+
+      //check if exists
+      const doc = await fb.likesCollection.doc(docId).get();
+      if (doc.exists) {
+        return;
+      }
+
+      // create
+      await fb.likesCollection.doc(docId).set({
+        postId: post.id,
+        userId: userId
+      });
+
+      // update count
+      fb.postsCollection.doc(post.id).update({
+        likes: post.likesCount + 1
+      });
     }
   },
   modules: {}
 });
+fb.postsCollection.orderBy("createdOn", "desc").onSnapshot((snapshot) => {
+  let postsArray = [];
+
+  snapshot.forEach((doc) => {
+    let post = doc.data();
+    post.id = doc.id;
+
+    postsArray.push(post);
+  });
+
+  store.commit("setPosts", postsArray);
+});
+export default store;

@@ -1,17 +1,15 @@
 <template>
-  <div id="app" :style="appStyle">
-    <SiteNav v-if="showNav"></SiteNav>
-    <router-view />
+  <div id="app" v-bind:style="appStyle">
+    <SiteNav id="nav" v-if="showNav"></SiteNav>
+    <router-view id="page" />
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-
 import SiteNav from "@/components/SiteNav";
 
 export default {
-  // name: "App",
   data() {
     return {
       appStyle: {
@@ -48,16 +46,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   // color: #2c3e50;
+  // background-color: #121212;
+  color: #efefef;
 }
-
-#nav {
-  a {
-    font-weight: bold;
-    // color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+#page {
+  background-color: #121212;
+  color: #efefef;
 }
 </style>
