@@ -92,7 +92,7 @@ export default {
   methods: {
     checkForm: function(e) {
       this.errors = [];
-      if (this.review.content.length < 5) {
+      if (this.review.content.length < 10) {
         this.errors.push("Lengthen your review.");
       }
       if (this.review.variation.length < 1) {

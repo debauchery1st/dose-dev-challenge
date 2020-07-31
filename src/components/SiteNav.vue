@@ -9,8 +9,8 @@
       <b-navbar-item to="/">
         <router-link to="/">Review</router-link>
       </b-navbar-item>
-      <b-navbar-item to="/settings">
-        <router-link to="/settings">Settings</router-link>
+      <b-navbar-item to="/charts">
+        <router-link to="/charts">Charts</router-link>
       </b-navbar-item>
     </template>
     <template slot="end">
