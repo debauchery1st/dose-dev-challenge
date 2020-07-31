@@ -14,13 +14,13 @@
               <div class="product-options">
                 <b-select v-model="review.variation" placeholder="Select a Product" icon="account">
                   <optgroup label="Alexa">
-                    <option value="charcoal-fab">Charcoal Fabric</option>
-                    <option value="sandstone-fab">Sandstone Fabric</option>
-                    <option value="black">Black</option>
-                    <option value="white">White</option>
-                    <option value="walnut-fin">Walnut Finish</option>
-                    <option value="walnut-fin">Heather Gray Fabric</option>
-                    <option value="walnut-fin">Oak Finish</option>
+                    <option value="Charcoal Fabric">Charcoal Fabric</option>
+                    <option value="Sandstone Fabric">Sandstone Fabric</option>
+                    <option value="Black">Black</option>
+                    <option value="White">White</option>
+                    <option value="Walnut Finish">Walnut Finish</option>
+                    <option value="Heather Gray Fabric">Heather Gray Fabric</option>
+                    <option value="Oak Finish">Oak Finish</option>
                   </optgroup>
                 </b-select>
               </div>
